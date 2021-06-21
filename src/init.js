@@ -16,7 +16,7 @@ const fileExists = (pathName) => {
 //console.log(fileExists('READMEE.md'))
 
 //Función para traer archivos .md de un directorio (se convierte ruta en absoluta)
-const filesDir = (pathDir) => {
+const isFilesDir = (pathDir) => {
   const routeAbsolute = path.resolve(pathDir)
   fs.readdir(routeAbsolute, (err, files) => {
     if (err)
@@ -33,7 +33,7 @@ const filesDir = (pathDir) => {
     }
   })
 }
-console.log(filesDir('Pruebas'))
+//console.log(isFilesDir('Pruebas'))
 
 //Función para traer un archivo.md (se convierte ruta en absoluta)
 const isFile = (pathName) => {
@@ -49,24 +49,10 @@ const isFile = (pathName) => {
 }
 //console.log(isFile('Pruebas/Prueba2.md'))
 
-// //Función leer el archivo
-// const fileRead = (pathName) => {
-//     console.log('pathname', pathName)
-//   fs.readFileSync(pathName, 'utf8' , (err, data) => {
-//     if (err) {
-//       console.error(err)
-//     }
-//     else {
-//       console.log('data', data)
-//      return data
-//     }
-//   })
-// }
-// console.log(fileRead('READMEE.md'))
-
 module.exports = {
   fileExists,
-  filesDir,
+  isFilesDir,
   isFile,
-  //fileRead
 }
+
+
