@@ -1,37 +1,29 @@
-const { readFileSync } = require('fs');
 const markdownLinkExtractor = require('markdown-link-extractor');
+const fetch = require('node-fetch');
 
-//Leer el archivo
-let pathName = 'C:/Users/USUARIO/BOG002-md-links/READMEE.md'
-const readingFile = readFileSync(pathName, {encoding: 'utf8'});
 
 //Función extraer Links
-const extractLinks = (pathName) => {
+const extractLink = (pathName) => {
+    let route = 'C:/Users/USUARIO/BOG002-md-links/READMEE.md'
     const links = markdownLinkExtractor(pathName, true);
     const arrayLinks = []
     links.forEach(link => { 
         const urlLink = link.href 
         const textLink = link.text
-        let pathName = 'C:/Users/USUARIO/BOG002-md-links/READMEE.md'
+        const fileLink = route
         const object = {
-            file:pathName,
+            file:fileLink,
             link:urlLink,
             text:textLink
         }
         arrayLinks.push(object)
-        console.log (arrayLinks)
+        //console.log (arrayLinks)
     });
+    return arrayLinks
 }
-extractLinks(readingFile)
-
-
-
-        
-    
-
- 
+extractLink(readingFile)
 
 
 
 
-    
+  
