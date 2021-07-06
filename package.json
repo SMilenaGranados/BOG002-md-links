@@ -2,8 +2,9 @@
   "name": "md-links",
   "version": "0.1.0",
   "dependencies": {
-    "axios": "^0.21.1",
     "markdown-link-extractor": "^1.3.0",
-    "node-fetch": "^2.6.1"
+    "marked": "^2.1.3",
+    "node-fetch": "^2.6.1",
+    "yargs": "^17.0.1"
   }
 }

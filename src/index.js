@@ -1,71 +1,61 @@
-const fs = require('fs');
-const path = require('path');
-const { readFileSync } = require('fs');
+const fs = require("fs");
+const path = require("path");
+const mdLinks = require("./mdlinks");
+const routeAdd = "Pruebas";
+const createRouteAbsolute = (pathName) => path.resolve(pathName);
+const isFileMd = (pathName) => path.extname(pathName) === ".md";
 
-//Función existe ruta?
-const fileExists = (pathName) => {
-  try {
-    fs.statSync(pathName);
-    return true;
-  } catch(err) {
-    if (err.code === 'ENOENT') {
-      return false;
-    }
-  }
-}
-//console.log(fileExists('READMEE.md'))
-
-//Función para traer archivos .md de un directorio (se convierte ruta en absoluta)
 const fileInDirectory = (pathDir) => {
-  const routeAbsolute = path.resolve(pathDir)
-  fs.readdir(routeAbsolute, (err, files) => {
-    if (err)
-      console.log(err);
-    else {
-      let arrayFiles = [];
-        files.forEach(file => {
-        if (path.extname(file) === ".md"){
-          arrayFiles.push(file);
-        }
-      })
-      console.log(arrayFiles)
-      return arrayFiles
+  const arrayFiles = []
+  const routeAbsolute = createRouteAbsolute(pathDir);
+  
+  console.log('este es RA', routeAbsolute)
+  const isDirectory = fs.lstatSync(routeAbsolute).isDirectory();
+  console.log('Dir', isDirectory)
+  if (isDirectory) {
+    fs.readdir(routeAbsolute, (err, files) => {
+      if (err) console.log(err);
+      else {
+        files.forEach((file) => {
+          console.log('file', file)
+          if (isFileMd(file)) {
+            arrayFiles.push(file)
+          } else {
+            console.error("No se encontraron archivos con extensión .md");
+          }
+        });
+      }
+    });
+  } else {
+    if (isFileMd(routeAbsolute)) {
+      console.log("Soy una ruta a", routeAbsolute);
+      arrayFiles.push(routeAbsolute)
+    } else {
+      console.error("El archivo no es extensión .md");
     }
-  })
-}
-//console.log(isFilesDir('Pruebas'))
 
-//Función para traer un archivo.md (se convierte ruta en absoluta)
-const isFileMd = (pathName) => {
-  const arrayFile = [];
-  const routeAbsolute = path.resolve(pathName);
-  if (path.extname(routeAbsolute) === ".md") {
-    arrayFile.push(routeAbsolute)
-    return arrayFile
   }
-  else {
-    console.log('Ingresa una ruta valida')
-  }
-}
-//console.log(isFile('Pruebas/Prueba2.md'))
+  console.log('arrayFiles', arrayFiles)
+  return arrayFiles
+};
 
-//Función mostrar el texto del archivo
-const showFileText = (pathName) => {
-  const readingFile = readFileSync(pathName, {encoding: 'utf8'});
-  if (readingFile.length > 1 ) {
-          return readingFile
+//Función iniciar
+const init = (pathName) => {
+  console.log("1");
+  try {
+    if (fs.statSync(pathName)) {
+      return fileInDirectory(pathName)
+    } else {
+      console.error("La ruta no existe");
+    }
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      console.log('La ruta no existe')
+    }
   }
-  else {
-    console.log('El documento está vacio')
-  }
-}
-//console.log(showFileText('C:/Users/USUARIO/BOG002-md-links/READMEE.md'))
+  return [];
+};
 
 module.exports = {
-  fileExists,
-  fileInDirectory,
-  isFileMd,
-  showFileText
-}
-
-
+  init
+};
