@@ -1,13 +1,12 @@
 const { readFileSync } = require("fs");
-const path = require("path");
+//const path = require("path");
 const markdownLinkExtractor = require("markdown-link-extractor");
 const fetch = require("node-fetch");
 const { init } = require("./index");
-const arrayLinks = [];
 
 //Promesa que resuelve arreglo con links
 const extractLink = (file) => {
-  console.log("fileeee", file);
+  const arrayLinks = [];
   return new Promise((resolve) => {
     const dataFile = readFileSync(file, { encoding: "utf8" });
     const links = markdownLinkExtractor(dataFile, true);
@@ -35,7 +34,7 @@ const validateLink = (link) => {
         if (res.status <= 299) {
           link.status = "OK";
           link.statusNumber = res.status;
-        } else if (res.status > 299 && res.status <= 499) {
+        } else if (res.status > 299) {
           link.status = "FAIL";
           link.statusNumber = res.status;
         }
@@ -50,10 +49,10 @@ const validateLink = (link) => {
 
 const linksValidate = (links) => {
   return new Promise((resolve, reject) => {
-    const prueba = links.map((object) => {
+    const objectValidate = links.map((object) => {
       return validateLink(object);
     });
-    Promise.all(prueba)
+    Promise.all(objectValidate)
       .then((dato) => {
         resolve(dato);
       })
@@ -70,7 +69,7 @@ const statsLinks = (file) => {
       .then((link) => {
         const linksUnique = new Set(link.map((elem) => elem.link));
         resolve({
-          File: routeabsoluteFile,
+          File: file,
           Unique: linksUnique.size,
           Total: link.length,
         });
@@ -80,7 +79,19 @@ const statsLinks = (file) => {
       });
   });
 };
-//statsLinks(file)// .then((dato) => console.log('stats links', dato));
+
+const statsLinksFiles = (files) => {
+  return new Promise((resolve, reject) => {
+    const objectStats = files.map((object) => {
+      return statsLinks(object);
+    });
+    Promise.all(objectStats)
+      .then((dato) => {
+        resolve(dato);
+      })
+      .catch((err) => reject(`A ocurrido un error ${err}`));
+  });
+};
 
 //Opcion stats-validate
 const linksStatsValidate = (file) => {
@@ -96,7 +107,7 @@ const linksStatsValidate = (file) => {
         });
         console.log("content", content);
         resolve({
-          File: routeabsoluteFile,
+          File: file,
           Unique: linksUnique.size,
           Total: link.length,
           Broken: content,
@@ -110,20 +121,24 @@ const linksStatsValidate = (file) => {
 //linksStatsValidate(arrayLinks) .then((dato) => console.table('validate stats', dato));
 
 //Función Md-links
-const mdLinks = (file, options) => {
-  return new Promise((resolve, reject) => {
-    //console.log('este es el file', file)
+const mdLinks = (file, options) => {  
+  return new Promise((resolve, reject) => {    
     const arrayFiles = init(file);
     const dataLinks = arrayFiles.map((links) => {
       return extractLink(links);
     });
     Promise.all(dataLinks).then((res) => {
       let newArrays = [].concat.apply([], res);
-      if (options) {
+      if (options.stats) {
+        statsLinksFiles(arrayFiles).then((dato) => console.log('stats links', dato));        
+      } 
+      if (options.validate) {
         linksValidate(newArrays).then((dato) => resolve(linksValidate(dato)));
-      } else {
-        console.log("sin opciones", newArrays);
-        resolve(newArrays);
+      } 
+      else {
+        if(!options.stats){
+          resolve(newArrays);
+        }        
       }
     });
     //console.log('este es datalinks', dataLinks)
