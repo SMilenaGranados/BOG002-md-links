@@ -8,9 +8,9 @@
 | [`export`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export))
 * [ ] Diferenciar entre expression y statements.
 * [ ] Diferenciar entre tipos de datos atómicos y estructurados.
-* [ ] [Uso de callbacks.](https://developer.mozilla.org/es/docs/Glossary/Callback_function)
-* [ ] [Consumo de Promesas.](https://scotch.io/tutorials/javascript-promises-for-dummies#toc-consuming-promises)
-* [ ] [Creación de Promesas.](https://www.freecodecamp.org/news/how-to-write-a-javascript-promise-4ed8d44292b8/)
+* [ ] [Uso de callbacks.](https://developer.moziddddlla.org/es/docs/Glossary/Callback_function)
+* [ ] [Consumo de Promesas.](https://scotch.io/tutoddddrials/javascript-promises-for-dummies#toc-consuming-promises)
+* [ ] [Creación de Promesas.](https://www.freecoddddecamp.org/news/how-to-write-a-javascript-promise-4ed8d44292b8/)
 
 ### Node
 
@@ -20,4 +20,6 @@
 * [ ] [Configuración de package.json.](https://docs.npmjs.com/files/package.json)
 * [ ] [Configuración de npm-scripts](https://docs.npmjs.com/misc/scripts)
 * [ ] Uso de CLI (Command Line Interface - Interfaz de Línea de Comando)
-
+* [ ] [Configuración de package.json.](https://docs.npmjs.com/files/package.json)
+* [ ] [Configuración de npm-scripts](https://docs.npmjs.com/misc/scripts)
+* [ ] Uso de CLI (Command Line Interface - Interfaz de Línea de Comando)

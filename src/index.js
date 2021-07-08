@@ -3,6 +3,7 @@ const path = require("path");
 const createRouteAbsolute = (pathName) => path.resolve(pathName);
 const isFileMd = (pathName) => path.extname(pathName) === ".md";
 
+//Identificar si es directorio o archivo
 const fileInDirectory = (pathDir) => {
   const arrayFiles = [];
   const routeAbsolute = createRouteAbsolute(pathDir);

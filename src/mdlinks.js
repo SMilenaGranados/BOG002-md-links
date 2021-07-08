@@ -1,5 +1,4 @@
 const { readFileSync } = require("fs");
-//const path = require("path");
 const markdownLinkExtractor = require("markdown-link-extractor");
 const fetch = require("node-fetch");
 const { init } = require("./index");
@@ -23,8 +22,6 @@ const extractLink = (file) => {
     resolve(arrayLinks);
   });
 };
-
-//extractLink(file)// .then((dato) => console.log('extraer links',dato));
 
 //Opción Validate
 const validateLink = (link) => {
@@ -60,8 +57,6 @@ const linksValidate = (links) => {
   });
 };
 
-//linksValidate(arrayLinks)// .then((dato) => console.log('validar links', dato));
-
 //Opción stats
 const statsLinks = (file) => {
   return new Promise((resolve, reject) => {
@@ -96,21 +91,22 @@ const statsLinksFiles = (files) => {
 //Opcion stats-validate
 const linksStatsValidate = (file) => {
   return new Promise((resolve, reject) => {
-    linksValidate(file)
+    extractLink(file)
       .then((link) => {
-        const linksUnique = new Set(link.map((elem) => elem.link));
-        let content = 0;
-        link.forEach((elem) => {
-          if (elem.status !== "OK") {
-            content += 1;
-          }
-        });
-        console.log("content", content);
-        resolve({
-          File: file,
-          Unique: linksUnique.size,
-          Total: link.length,
-          Broken: content,
+        linksValidate(link).then((e) => {
+          const linksUnique = new Set(e.map((elem) => elem.link));
+          let content = 0;
+          e.forEach((elem) => {
+            if (elem.status !== "OK") {
+              content += 1;
+            }
+          });
+          resolve({
+            File: file,
+            Unique: linksUnique.size,
+            Total: e.length,
+            Broken: content,
+          });
         });
       })
       .catch((err) => {
@@ -118,33 +114,45 @@ const linksStatsValidate = (file) => {
       });
   });
 };
-//linksStatsValidate(arrayLinks) .then((dato) => console.table('validate stats', dato));
+
+const statsValidateLinksFiles = (files) => {
+  return new Promise((resolve, reject) => {
+    const objectStatsValidate = files.map((object) => {
+      return linksStatsValidate(object);
+    });
+    Promise.all(objectStatsValidate)
+      .then((dato) => {
+        resolve(dato);
+      })
+      .catch((err) => reject(`A ocurrido un error ${err}`));
+  });
+};
 
 //Función Md-links
-const mdLinks = (file, options) => {  
-  return new Promise((resolve, reject) => {    
+const mdLinks = (file, options) => {
+  return new Promise((resolve) => {
     const arrayFiles = init(file);
     const dataLinks = arrayFiles.map((links) => {
       return extractLink(links);
     });
     Promise.all(dataLinks).then((res) => {
       let newArrays = [].concat.apply([], res);
-      if (options.stats) {
-        statsLinksFiles(arrayFiles).then((dato) => console.log('stats links', dato));        
-      } 
-      if (options.validate) {
-        linksValidate(newArrays).then((dato) => resolve(linksValidate(dato)));
-      } 
-      else {
-        if(!options.stats){
-          resolve(newArrays);
-        }        
+      if (options.stats && options.validate) {
+        statsValidateLinksFiles(arrayFiles).then((dato) =>
+          console.log("stats-validate links", dato)
+        );
+      } else if (options.stats) {
+        statsLinksFiles(arrayFiles).then((dato) =>
+          console.log("stats links", dato)
+        );
+      } else if (options.validate) {
+        linksValidate(newArrays).then((dato) => resolve("validate links", linksValidate(dato)));
+      } else {
+        resolve(newArrays);
       }
     });
-    //console.log('este es datalinks', dataLinks)
   });
 };
-//mdLinks(file,true)
 
 module.exports = {
   mdLinks,
