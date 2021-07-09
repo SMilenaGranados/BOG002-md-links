@@ -14,7 +14,7 @@ const fileInDirectory = (pathDir) => {
       if (isFileMd(file)) {
         arrayFiles.push(path.join(routeAbsolute, file));
       } else {
-        console.error("No se encontraron archivos con extensión .md");
+        console.error("Este archivo no es extensión .md");
       }
     });
   } else {
