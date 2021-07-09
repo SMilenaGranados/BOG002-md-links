@@ -146,7 +146,7 @@ const mdLinks = (file, options) => {
           console.log("stats links", dato)
         );
       } else if (options.validate) {
-        linksValidate(newArrays).then((dato) => resolve("validate links", linksValidate(dato)));
+        linksValidate(newArrays).then((dato) => resolve(linksValidate(dato)));
       } else {
         resolve(newArrays);
       }
