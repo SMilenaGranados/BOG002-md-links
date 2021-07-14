@@ -17,9 +17,11 @@ herramienta usando [Node.js](https://nodejs.org/), que lea y analice archivos
 en formato `Markdown`, para verificar los links que contengan y reportar
 algunas estadísticas.
 
+
 ## 2. Diagrama de flujo
 
 <p align = "center"> <img src="assets/DiagramaMdLinks.jpg"></p>
+
 
 ## 3. Instalación interfaz linea de comando CLI
 
@@ -64,6 +66,7 @@ Unique: 3
 Broken: 1
 ```
 
+
 ## 4. Instalación y uso como modulo
 
 ```js
@@ -87,6 +90,7 @@ mdLinks("./some/dir")
   })
   .catch(console.error);
 ```
+
 
 ## 5. Objetivos de aprendizaje
 
