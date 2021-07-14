@@ -1,7 +1,7 @@
-#! / usr / bin / env nodo
+#!/usr/bin/env nodo
 
 const argv = process.argv;
-const { mdLinks } = require("./mdlinks");
+const { mdLinks } = require("../src/mdlinks.js");
 
 const path = argv[2];
 const options = {
