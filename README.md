@@ -20,7 +20,7 @@ algunas estadísticas.
 
 ## 2. Diagrama de flujo
 
-<p align = "center"> <img src="assets/DiagramaMdLinks.jpg"></p>
+<p align = "center"> <img src="assets/DiagramaFlujo.jpg"></p>
 
 
 ## 3. Instalación interfaz linea de comando CLI
